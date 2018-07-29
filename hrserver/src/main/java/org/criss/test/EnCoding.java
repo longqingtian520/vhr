@@ -14,6 +14,11 @@ public class EnCoding {
 		boolean pswFlag1 = BCrypt.checkpw("123","$2a$10$oE39aG10kB/rFu2vQeCJTu/V/v4n6DRR0f8WyXRiAYvBpmadoOBE.");//解密
 		System.out.println("===="+pswFlag);
 		System.out.println("===="+pswFlag1);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("{\"status\":\"error\",\"msg\":\"");
+		sb.append("用户名或密码输入错误，登录失败!");
+		System.out.println(sb.toString());
 	}
 
 }
