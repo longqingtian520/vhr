@@ -1,12 +1,17 @@
 package org.sang.controller.system;
 
+
 import org.sang.bean.*;
 import org.sang.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +23,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/system/basic")
 public class SystemBasicController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(SystemBasicController.class);
+	
     @Autowired
     RoleService roleService;
     @Autowired
@@ -30,6 +38,9 @@ public class SystemBasicController {
     PositionService positionService;
     @Autowired
     JobLevelService jobLevelService;
+    
+    @Autowired
+    ObjectMapper objectMapper;
 
     @RequestMapping(value = "/role/{rid}", method = RequestMethod.DELETE)
     public RespBean deleteRole(@PathVariable Long rid) {
@@ -48,12 +59,13 @@ public class SystemBasicController {
     }
 
     @RequestMapping(value = "/menuTree/{rid}", method = RequestMethod.GET)
-    public Map<String, Object> menuTree(@PathVariable Long rid) {
+    public Map<String, Object> menuTree(@PathVariable Long rid)throws Exception {
         Map<String, Object> map = new HashMap<>();
         List<Menu> menus = menuService.menuTree();
         map.put("menus", menus);
         List<Long> selMids = menuService.getMenusByRid(rid);
         map.put("mids", selMids);
+        System.out.println("menus:" + objectMapper.writeValueAsString(menus) + ", mids:" + objectMapper.writeValueAsString(selMids));
         return map;
     }
 
